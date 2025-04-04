@@ -1,0 +1,165 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Network Scanner</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'cssfile-up.html' %}
+</head>
+
+<body>
+    <!-- Start Left menu area -->
+    {% include 'leftmenu.html' %}
+    <!-- End Left menu area -->
+
+    <!-- start Welcome area (upper menu and search)-->
+    {% include 'uppermenu-search.html' %}
+    <!-- End Welcome area (upper menu and search)-->
+
+        <!-- Single pro tab review Start-->
+        <div class="single-pro-review-area mt-t-30 mg-b-15">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <div class="product-payment-inner-st">
+                            <ul id="myTabedu1" class="tab-review-design">
+                                <li class="active"><a href="#description">Advance Port Scanner</a></li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content custom-product-edit">
+                                <div class="product-tab-list tab-pane fade active in" id="description">
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"">
+                                            <div class="review-content-section">
+                                                <div id="dropzone1" class="pro-ad">
+                                                    <div class="row">
+                                                        <form id="scanForm" method="POST">
+                                                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                                <div class="form-group">
+                                                                    <label>Target IP or Hostname:</label>
+                                                                    <input id="target" name="target" type="text" class="form-control" placeholder="Eg.  www.google.com or 192.158.1.38">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label>Scan Type:</label><br>
+                                                                    <div class="scan-type">
+                                                                        <input type="radio" id="portRange" name="scanType" value="range" required>
+
+
+                                                                        <label for="portRange">Port Range</label><br>
+                                                                        <input class="form-control" type="text" id="portInput" name="portRange" placeholder="Eg: 100-200" disabled>
+                                                                        </br>
+
+                                                                        <input type="radio" id="lightScan" name="scanType" value="lightScan" >
+                                                                        <label for="lightScan">Light Scan (Top 1000 ports)</label><br>
+
+                                                                         <input type="radio" id="deepScan" name="scanType" value="deepScan">
+                                                                        <label for="deepScan">Deep Scan (All 65535 ports)</label><br>
+                                                                    </div>
+                                                                </div>
+                                                                <br>
+                                                                <div class="form-group">
+                                                                    <label for="detectService">Detect Service Version:</label><br>
+                                                                    <input type="checkbox" id="detectService" name="detectService">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="detectOS">Detect Operating System:</label><br>
+                                                                    <input type="checkbox" id="detectOS" name="detectOS">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="traceRoute">Perform Traceroute:</label><br>
+                                                                    <input type="checkbox" id="traceRoute" name="traceRoute">
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <button class="btn btn-primary waves-effect waves-light" type="submit">Start Scan</button>
+                                                                </div>
+                                                            </form>
+                                                            
+                                                            <div id="loading" class="loading">Scanning... Please wait.  </div>                                                          </div>
+                                                            <div id="results">
+                                                                <h2>Scan Results:</h2>
+                                                                <pre id="scanResults"></pre>
+                                                            </div>
+                                                            <script>
+                                                                // Handle port range textbox enable/disable
+                                                                const portRangeRadio = document.getElementById('portRange');
+                                                                const portRangeInput = document.getElementById('portInput'); // Corrected to match the actual ID
+                                                                
+                                                                document.querySelectorAll('input[name="scanType"]').forEach(radio => {
+                                                                    radio.addEventListener('change', () => {
+                                                                        portRangeInput.disabled = !portRangeRadio.checked; // Enable/disable based on selection
+                                                                    });
+                                                                });
+
+                                                                
+                                                                document.querySelectorAll('input[name="scanType"]').forEach(radio => {
+                                                                    radio.addEventListener('change', () => {
+                                                                        portRangeInput.disabled = !portRangeRadio.checked;
+                                                                    });
+                                                                });
+
+                                                                const form = document.getElementById('scanForm');
+                                                                const loading = document.getElementById('loading');
+                                                                const results = document.getElementById('results');
+                                                                const scanResults = document.getElementById('scanResults');
+
+                                                                form.addEventListener('submit', function(event) {
+                                                                    event.preventDefault();
+                                                                    loading.style.display = 'block';
+                                                                    results.style.display = 'none';
+                                                                    scanResults.textContent = '';
+
+                                                                    // Validate port range input if selected
+                                                                    if (portRangeRadio.checked && !portRangeInput.value) {
+                                                                        alert('Please enter a valid port range');
+                                                                        loading.style.display = 'none';
+                                                                        return;
+                                                                    }
+                                                                    
+                                                                    const formData = new FormData(form);
+
+                                                                    fetch('/portscanner/scan', {
+                                                                        method: 'POST',
+                                                                        body: formData
+                                                                    })
+                                                                    .then(response => response.text())
+                                                                    .then(data => {
+                                                                        loading.style.display = 'none';
+                                                                        results.style.display = 'block';
+                                                                        scanResults.textContent = data;
+                                                                    })
+                                                                    .catch(error => {
+                                                                        loading.style.display = 'none';
+                                                                        results.style.display = 'block';
+                                                                        scanResults.textContent = 'Error: ' + error;
+                                                                    });
+                                                                });
+                                                            </script>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    <!-- footer end -->        
+    {% include 'footer.html' %}     
+    <!-- footer end -->
+
+    </div>
+    <!-- cssfile dowm start -->        
+    {% include 'cssfile-bottom.html' %}     
+    <!-- cssfile dowm end -->
+
+</body>
+
+</html>
+</create_file>

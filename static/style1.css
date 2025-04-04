@@ -1,0 +1,128 @@
+/* Dashboard Styling - Updated for better responsiveness */
+
+#dashboard .container {
+    display: flex; /* Added for responsive layout */
+
+    max-width: 100%; /* Updated to allow full width on smaller screens */
+
+    margin: 0; /* Removed auto margin for better alignment */
+
+    padding: 10px; /* Reduced padding for better spacing */
+
+    background-color: #f9f9f9; /* Changed background color for better contrast */
+
+    border-radius: 4px; /* Reduced border radius for a sharper look */
+
+    /*box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* Updated shadow for a more modern look */
+
+}
+#dashboard .container1 {
+    display: flex; /* Added for responsive layout */
+ /* Updated to allow full width on smaller screens */
+
+    margin: 0; /* Removed auto margin for better alignment */
+
+    padding: 10px; /* Reduced padding for better spacing */
+
+    background-color: #f9f9f9; /* Changed background color for better contrast */
+
+    border-radius: 2px; /* Reduced border radius for a sharper look */
+
+    /*box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);  Updated shadow for a more modern look */
+
+}
+#dashboard .container2 {
+    display: flex; /* Added for responsive layout */
+ /* Updated to allow full width on smaller screens */
+    height: 60%;
+    margin: 0; /* Removed auto margin for better alignment */
+
+    padding: 10px; /* Reduced padding for better spacing */
+
+    background-color: #f9f9f9; /* Changed background color for better contrast */
+
+    border-radius: 2px; /* Reduced border radius for a sharper look */
+
+    /*box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);  Updated shadow for a more modern look */
+
+}
+#dashboard .container3 {
+    display: flex; /* Added for responsive layout */
+ /* Updated to allow full width on smaller screens */
+
+    margin: 0; /* Removed auto margin for better alignment */
+
+    padding: 10px; /* Reduced padding for better spacing */
+
+    background-color: #f9f9f9; /* Changed background color for better contrast */
+
+    border-radius: 2px; /* Reduced border radius for a sharper look */
+
+    /*box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);  Updated shadow for a more modern look */
+
+}
+
+#dashboard h1 {
+    font-size: 2em; /* Increased font size for better visibility */
+
+    color: #444; /* Darkened color for better readability */
+
+    margin-bottom: 0.5em; /* Reduced margin for tighter layout */
+
+    text-align: left; /* Changed alignment for a more standard look */
+
+}
+
+.dashboard-layout {
+    flex-direction: column; /* Changed to column layout for better stacking */
+
+    display: flex;
+    gap: 20px; /* Reduced gap for a more compact layout */
+
+}
+
+
+/* Existing styles */
+#metrics-table {
+    width: 100%; /* Full width */
+    border-collapse: collapse; /* Collapse borders */
+}
+
+#metrics-table th, #metrics-table td {
+    border: 1px solid #ddd; /* Border for table cells */
+    padding: 8px; /* Padding for cells */
+    text-align: left; /* Align text to the left */
+}
+
+#metrics-table th {
+    background-color: #f2f2f2; /* Header background color */
+    color: #333; /* Header text color */
+}
+
+#metrics-table tr:nth-child(even) {
+    background-color: #f9f9f9; /* Zebra striping for even rows */
+}
+
+#metrics-table tr:hover {
+    background-color: #f1f1f1; /* Highlight row on hover */
+}
+
+.charts-container {
+    flex: 2; /* Allow charts container to grow */
+
+    width: 100%; /* Set to full width for better responsiveness */
+
+}
+
+.chart-container {
+    width: 100%;
+    height: 300px;
+    margin: 20px 0;
+}
+
+canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Other existing styles... */

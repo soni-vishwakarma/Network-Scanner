@@ -1,0 +1,57 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Network Scanner</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            padding-bottom: 0px;
+        }
+
+        .image-container img {
+            padding-top: 20px;
+            max-width: 190%;
+            max-height: 80%;
+            padding-bottom: 0px;
+            /* opacity: 0.7;  Adjust transparency (0 = fully transparent, 1 = fully visible) */ 
+        }
+    </style>
+    {% include 'cssfile-up.html' %}
+</head>
+
+<body>
+    <!-- Start Left menu area -->
+    {% include 'leftmenu.html' %}
+    <!-- End Left menu area -->
+
+    <!-- start Welcome area (upper menu and search)-->
+    {% include 'home-uppermenu.html' %}
+    <!-- End Welcome area (upper menu and search)-->
+
+    <!-- Single pro tab review Start -->
+
+        <div class="container-fluid">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="image-container">
+                        <img src="/static/img/home.png" alt="Home Image" class="img-responsive">
+                    </div>
+                </div>
+        </div>
+        
+    <!-- Footer -->
+    {% include 'footer.html' %}     
+
+    <!-- CSS File Bottom -->
+    {% include 'cssfile-bottom.html' %}     
+
+</body>
+
+</html>

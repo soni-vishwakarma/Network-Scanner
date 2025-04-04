@@ -1,0 +1,126 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Network Scanner</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% include 'cssfile-up.html' %}
+</head>
+
+<body>
+    <!-- Start Left menu area -->
+    {% include 'leftmenu.html' %}
+    <!-- End Left menu area -->
+
+    <!-- Start Upper menu area -->
+    {% include 'uppermenu-search.html' %}
+    <!-- End Upper menu area -->
+
+    <!-- Start Main Content -->
+    <div class="single-pro-review-area mt-t-30 mg-b-15">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="product-payment-inner-st">
+                        <ul id="myTabedu1" class="tab-review-design">
+                            <li class="active"><a href="#description">LAN Scanner</a></li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content custom-product-edit">
+                            <div class="product-tab-list tab-pane fade active in" id="description">
+                                <div class="row">
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <div class="review-content-section">
+                                            <div class="pro-ad">
+                                                <div class="row">
+                                                    <form id="lanScanForm" method="POST">
+                                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                            <div class="form-group">
+                                                                <label for="network_prefix">Network Prefix (Eg. 192.168.249.0/24)</label>
+                                                                <input id="network_prefix" name="network_prefix" type="text" class="form-control" placeholder="Eg. 192.168.1.0/24">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="start_port">Start Port</label>
+                                                                <input id="start_port" name="start_port" type="text" class="form-control" placeholder="Eg. 1">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label for="end_port">End Port</label>
+                                                                <input id="end_port" name="end_port" type="text" class="form-control" placeholder="Eg. 10">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <button class="btn btn-primary waves-effect waves-light" type="submit">Start Scan</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                    <div id="loading" class="loading" style="display: none; font-weight: bold;">Scanning... Please wait.</div>
+                                                    <div id="scanResults">
+                                                        <h2>Scan Results:</h2>
+                                                        <pre id="results"></pre>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    {% include 'footer.html' %}
+
+    <!-- JavaScript for scanning -->
+    <script>
+        document.getElementById('lanScanForm').onsubmit = async function(event) {
+            event.preventDefault();
+            let network_prefix = document.getElementById('network_prefix').value.trim();
+            let start_port = document.getElementById('start_port').value.trim();
+            let end_port = document.getElementById('end_port').value.trim();
+            let resultsContainer = document.getElementById('results');
+            let loading = document.getElementById('loading');
+
+            resultsContainer.innerText = "";
+            loading.style.display = "block";
+
+            try {
+                let response = await fetch('/lan/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ network_prefix, start_port, end_port })
+                });
+
+                let data = await response.json();
+                loading.style.display = "none";
+
+                if (response.ok) {
+                    if (data.length === 0) {
+                        resultsContainer.innerText = "No open ports found.";
+                    } else if (data.error) {
+                        resultsContainer.innerText = "Error: " + data.error;
+                    } else {
+                        resultsContainer.innerText = data.map(result => {
+                            return `Host: ${result.host}\nPort: ${result.port} (${result.service})\nStatus: ${result.status}\nVulnerabilities: ${result.vulnerabilities.join(", ")}\n----------------------`;
+                        }).join("\n");
+                    }
+                } else {
+                    resultsContainer.innerText = "Error occurred while scanning.";
+                }
+            } catch (error) {
+                loading.style.display = "none";
+                resultsContainer.innerText = `An error occurred: ${error.message}`;
+            }
+        };
+    </script>
+
+    <!-- Bottom CSS -->
+    {% include 'cssfile-bottom.html' %}
+
+</body>
+
+</html>

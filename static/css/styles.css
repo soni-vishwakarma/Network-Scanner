@@ -1,0 +1,109 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #4c6ef5, #b197fc);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #ffffff;
+    padding: 30px 50px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus {
+    border-color: #4c6ef5;
+}
+
+input[type="checkbox"], input[type="radio"] {
+    margin-right: 10px;
+}
+
+button {
+    background-color: #4c6ef5;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+button:hover {
+    background-color: #3b5bdb;
+    transform: translateY(-2px);
+}
+
+button:active {
+    background-color: #364fc7;
+    transform: translateY(0);
+}
+
+#results {
+    margin-top: 20px;
+    text-align: left;
+}
+
+pre {
+    background: #f1f1f1;
+    padding: 15px;
+    border-radius: 6px;
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.loading {
+    display: none;
+    font-size: 18px;
+    color: #4c6ef5;
+    animation: fadeIn 1s ease-in-out infinite alternate;
+}

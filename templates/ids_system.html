@@ -1,0 +1,185 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intrusion Detection System</title>
+        <!-- favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.png">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function fetchMetrics() {
+            fetch("/metrics")
+            .then(response => response.json())
+            .then(data => { updateDashboard(data); })
+            .catch(error => { console.error("Error fetching metrics:", error); });
+        }
+
+        function updateDashboard(data) {
+            const table = document.getElementById("metrics-table");
+            const newRow = table.insertRow(1);
+
+            newRow.insertCell(0).innerText = data.timestamp;
+            newRow.insertCell(1).innerText = `${data.cpu}%`;
+            newRow.insertCell(2).innerText = `${data.memory}%`;
+            newRow.insertCell(3).innerText = data.anomaly;
+            newRow.insertCell(4).innerText = data.threat_type;
+            newRow.insertCell(5).innerText = data.severity_level;
+
+            if (data.anomaly.includes("Potential threat detected")) {
+                newRow.style.color = "red";
+            }
+
+            if (table.rows.length > 21) {
+                table.deleteRow(21);
+            }
+
+            updateChart(cpuChart, data.cpu);
+            updateChart(memoryChart, data.memory);
+        }
+
+        function startPolling() {
+            fetchMetrics();
+            setInterval(fetchMetrics, 5000);
+        }
+
+        let cpuChart, memoryChart;
+
+        function initializeCharts() {
+            const cpuCtx = document.getElementById("cpuChart").getContext("2d");
+            const memoryCtx = document.getElementById("memoryChart").getContext("2d");
+
+            cpuChart = new Chart(cpuCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'CPU Usage (%)',
+                        data: [],
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { display: false },
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+
+            memoryChart = new Chart(memoryCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Memory Usage (%)',
+                        data: [],
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { display: false },
+                        y: { beginAtZero: true, max: 100 }
+                    }
+                }
+            });
+        }
+
+        function updateChart(chart, value) {
+            chart.data.labels.push('');
+            chart.data.datasets[0].data.push(value);
+            if (chart.data.datasets[0].data.length > 20) {
+                chart.data.labels.shift();
+                chart.data.datasets[0].data.shift();
+            }
+            chart.update();
+        }
+
+        function goToHomePage() {
+            window.location.href = "http://127.0.0.1:5000";
+        }
+
+        window.onload = function() {
+            initializeCharts();
+            startPolling();
+        };
+    </script>
+    <style>
+        .top-left-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .top-left-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <button class="top-left-button" onclick="goToHomePage()">Go to Home</button>
+
+    <div id="dashboard">
+        <h1 style="text-align:center; margin-bottom: 20px;">Intrusion Detection System</h1>
+
+        <div class="container">
+            <div class="container1">
+                <div class="dashboard-layout">
+                    <div class="metrics-list">
+                        <table id="metrics-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>CPU Usage</th>
+                                    <th>Memory Usage</th>
+                                    <th>Anomaly</th>
+                                    <th>Threat Type</th>
+                                    <th>Severity Level</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>N/A</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>Low</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="charts-container" style="float: right; width: 50%; padding-left: 20px;">
+                <div class="container2">
+                    <div class="chart-container">
+                        <h2>Real-Time CPU Usage</h2>
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                </div>
+                <div class="container3">
+                    <div class="chart-container">
+                        <h2>Real-Time Memory Usage</h2>
+                        <canvas id="memoryChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
