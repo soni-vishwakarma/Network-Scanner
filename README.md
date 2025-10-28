@@ -1,7 +1,5 @@
-# Network-Scanner
-Built a web-based Network Scanner with three modules: Port Scanner, LAN Scanner, and Intrusion Detection.
-Designed a responsive UI using Flask for the backend, HTML/CSS and JavaScript for the frontend enabling real-time
-scan configuration and dynamic result display.
+# Network Scanner (Python, Flask, Nmap, Scapy)
+Developed a web-based network scanning tool that identifies active hosts and open ports within a local network using Nmap and Scapy. The project includes a Flask-powered interface for real-time scan execution and result visualization. Integrated basic anomaly detection to highlight unusual network activity, enhancing understanding of TCP/IP protocols, packet analysis, and network security concepts.
 
 **1. Desktop:**
 ![Screenshot 2025-04-04 221329](https://github.com/user-attachments/assets/50506b43-1f76-40ed-85f0-778adee908a4)
